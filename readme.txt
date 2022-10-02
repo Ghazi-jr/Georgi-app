@@ -1,3 +1,8 @@
+#Cd to API to build image
+#docker build . -t georgi-api
+
+#Cd to Client to build image
+#docker-build . -t georgi-client
 
 #Docker-compose up
 
