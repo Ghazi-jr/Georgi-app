@@ -8,7 +8,7 @@ INSERT_STATEMENT = 'INSERT INTO device_list (type, properties ,geom) VALUES (%s,
 
 def create_table():
     conn = psycopg2.connect(
-        "dbname='postgres' user='postgres' password='Pass2020!' host='localhost' port='5432'")
+        "dbname='postgres' user='postgres' password='Pass2020!' host='db' port='5432'")
     cur = conn.cursor()
     cur.execute("DROP TABLE IF EXISTS device_list;")
     cur.execute(
@@ -22,7 +22,7 @@ create_table()
 
 def import_feature(feature_data):
     conn = psycopg2.connect(
-        "dbname='postgres' user='postgres' password='Pass2020!' host='localhost' port='5432' ")
+        "dbname='postgres' user='postgres' password='Pass2020!' host='db' port='5432' ")
 
     psycopg2.extras.register_hstore(conn)
     cur = conn.cursor()

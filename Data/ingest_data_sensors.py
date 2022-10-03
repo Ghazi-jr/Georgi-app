@@ -11,7 +11,7 @@ with open('data_sensors.json') as data_file:
 
 def create_table():
     conn = psycopg2.connect(
-        "dbname='postgres' user='postgres' password='Pass2020!' host='localhost' port='5432' ")
+        "dbname='postgres' user='postgres' password='Pass2020!' host='db' port='5432' ")
     cur = conn.cursor()
     cur.execute("DROP TABLE IF EXISTS data_sensors;")
     cur.execute(
@@ -25,6 +25,6 @@ create_table()
 df = json_normalize(d)
 df.columns = df.columns.str.lower()
 engine = create_engine(
-    "postgresql+psycopg2://postgres:Pass2020!@localhost:5432/postgres")
+    "postgresql+psycopg2://postgres:Pass2020!@db:5432/postgres")
 df.to_sql("data_sensors", engine, index=False, if_exists='append')
 print("Done")

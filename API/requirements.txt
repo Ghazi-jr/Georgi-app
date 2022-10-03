@@ -3,3 +3,4 @@ psycopg2==2.9.3
 psycopg2_binary==2.9.3
 pydantic==1.9.0
 uvicorn>=0.15.0,<0.16.0
+SQLAlchemy
