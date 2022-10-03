@@ -48,30 +48,55 @@ export default function MapBox({ sensor, setSensor }) {
       setZoom(map.current.getZoom().toFixed(2));
     });
   });
+
   useEffect(() => {
-    if (!map.current && !data.current) return; // wait for map to initialize
+    if (!map.current && !data.current) return;
+    // wait for map to initialize
+
     map.current.on("load", () => {
-      map.current.addSource("my-data", {
-        type: "geojson",
-        data: {
-          type: "FeatureCollection",
-          crs: {
-            type: "name",
-            properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
-          },
-          features: data.current,
-        },
-      });
-      map.current.addLayer({
-        id: "data",
-        type: "circle",
-        source: "my-data",
-        paint: {
-          "circle-radius": 8,
-          "circle-color": "#6366F1",
-        },
-        filter: ["==", "$type", "Point"],
-      });
+      map.current.loadImage(
+        "https://cdn-icons-png.flaticon.com/16/0/14.png",
+        (error, image) => {
+          if (error) throw error;
+          map.current.addImage("custom-marker", image, { sdf: true });
+          map.current.addSource("my-data", {
+            type: "geojson",
+            data: {
+              type: "FeatureCollection",
+              crs: {
+                type: "name",
+                properties: { name: "urn:ogc:def:crs:OGC:1.3:CRS84" },
+              },
+              features: data.current,
+            },
+          });
+          map.current.addLayer({
+            id: "data",
+            type: "symbol",
+            layout: {
+              "text-field": ["get", "Device_ID"],
+              "text-anchor": "left",
+              "text-size": 14,
+              "text-offset": [0.8, 0],
+              "icon-image": "custom-marker",
+            },
+            source: "my-data",
+            paint: {
+              "icon-color": [
+                "match",
+                ["get", "Status"],
+                "Active",
+                "#367E18",
+                "Not Active",
+                "#FF1E1E",
+                "#ccc",
+              ],
+            },
+
+            filter: ["==", "$type", "Point"],
+          });
+        }
+      );
     });
     map.current.on("click", "data", (e) => {
       // Copy coordinates array.
